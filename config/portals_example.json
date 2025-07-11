@@ -1,0 +1,21 @@
+{
+    "portal_api_configs": [
+        {
+            "environment": "ckan-project1",
+            "PORTAL_HOST": "project_server",
+            "PORTAL_PORT": 5000,
+            "PORTAL_CKAN_API_BASE": "http://project-server:5000/api/3/action/",
+            "PORTAL_URL": "http://project-server:5000/",
+            "APIkey": "6171361672376237626dsdsdsd899889"
+        },
+        {
+            "environment": "ckan-generic",
+            "PORTAL_HOST": "ubuntu",
+            "PORTAL_PORT": 5000,
+            "PORTAL_CKAN_API_BASE": "http://ubuntu:5000/api/3/action/",
+            "PORTAL_URL": "http://ubuntu:5000/",
+            "APIkey": "12345"
+        }
+        
+    ]
+}

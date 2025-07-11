@@ -1,0 +1,69 @@
+# example mapper configuration
+# version 0.3
+# author: Otto Lange / o.a.lange@uu.nl
+# modified: 26-06-2025
+
+# mapper for testing and demonstrating
+
+# some basic rules:
+# a 'container field' (e.g. 'event' below will be passed as an array [] of dicts, also in case of length one
+# repeating values will be passed as a set {}
+# $ stands for root of JSON structure (compare XPath) -> removed from version 3.0 since all paths are fully qualified now
+# ~ implies a hash of the lower-cased concatenated field values
+
+# an example metadata schema: see example.yml. Configuration below is based on this schema.
+
+# Fixed or generated values for all records: (see template.json)
+
+# Changes
+
+# v0.2
+# Added a field 'key' which has become mandatory with ref_sheet;
+# 'key' must concern a column with unique values to distinguish rows;
+# without this unique key we would have problems with Excel row numbers when f.i. inserting new rows.
+
+# v0.3
+# Returned to fully qualified paths in order to be able to process commplex sub sheets correctly
+# '$' is now assumed implicitly because of fully qualified paths constraint
+# when 'ref_sheet' is defined then 'field_name' is no longer necessary
+
+start_sheet: events  # start_sheet contains all ckan records; other sheets are referenced via (sheet_name::row_id)+
+
+base_fields:
+  owner_org: custom_org
+  name: ~._events::Titel.owner_org  # will be a hash of these two unique (!) fields concatenated as lower case.
+  type: event
+
+# mappings from Excel columns:
+
+field_mapper:  # mandatory key
+  events:  # sheet name
+    Titel:  # column name
+      field_name: title  # is taken as the unique field in this example; could also be a different identifier column, but it must be possible to identify for updating!
+    Plaats:
+      field_name: event.event_city
+      multiple_value_separator: ';'
+    Datum:
+      field_name: event.event_date
+      date_value: yes
+    Onderwerp:
+      field_name: event.event_title
+    Korte omschrijving:
+      field_name: event.event_short_description
+    Contact:
+      multiple_value_separator: ';'
+      ref_sheet:  contacts
+      # changed to the sheet_name to allow the mere entrance of row numbers
+      # i.e., used to be e.g. <sheet_name>::<row_number> and ref_sheet: True
+      key: unique_name  # in this case unique_name must be a column name with unique values in sheet contacts
+  contacts:
+    Voornaam:
+      field_name: event.contacts.contact_voornaam
+    Achternaam:
+      field_name: event.contacts.contact_achternaam
+    Plaats:
+      field_name: event.contacts.location.contact_plaats
+    Provincie:
+      field_name: event.contacts.location.province
+    Land:
+      field_name: event.contacts.location.country
