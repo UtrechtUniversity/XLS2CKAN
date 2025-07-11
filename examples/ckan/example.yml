@@ -1,0 +1,74 @@
+scheming_version: 2
+dataset_type: event  # CUSTOM
+about: A generic/test/example metadata schema for usage of the XLS loader pipeline.
+about_url: http://github.com/ckan/ckanext-scheming
+
+dataset_fields:
+
+# standard CKAN field
+- field_name: title
+  label: Title of the collection
+  preset: title
+  form_placeholder: eg. A descriptive title
+
+# standard CKAN field
+# name is an internal CKAN identifier;
+- field_name: name
+  label: identifier
+  preset: dataset_slug
+  form_placeholder: eg. my-dataset
+
+# standard ckan
+- field_name: owner_org
+
+- field_name: event
+  repeating_label: Event
+  repeating_subfields:
+  - field_name: event_city
+    label: Place of event
+  - field_name: event_date
+    label: Date of event
+    preset: date
+  - field_name: event_title
+    label: Title of event
+  - field_name: event_short_description
+    label: Short description of event
+  - field_name: contacts
+    repeating_label: contact
+    repeating_subfields:
+    - field_name: contact_voornaam
+      label: voornaam
+    - field_name: contact_achternaam
+      label: achternaam
+    - field_name: location
+      repeating_label: location details
+      repeating_subfields:
+      - field_name: contact_plaats
+        label: woonplaats
+      - field_name: province
+        label: provincie
+      - field_name: country
+        label: land
+
+# do not remove stuff beyond this line
+
+
+resource_fields:
+
+- field_name: url
+  label: URL
+  preset: resource_url_upload
+
+- field_name: name
+  label: Title
+  form_placeholder: Descriptive name of the resource.
+
+- field_name: description
+  label: Description
+  form_snippet: markdown.html
+  form_placeholder: Summary explanation of file contents, purpose, origination, methods and usage guidance.
+
+- field_name: format
+  label: Format
+  preset: resource_format_autocomplete
+
